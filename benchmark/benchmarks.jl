@@ -1,5 +1,5 @@
 using BenchmarkTools
-include("struct-nbody.jl")
+using BasicNBodySim
 
 const SUITE = BenchmarkGroup()
 
