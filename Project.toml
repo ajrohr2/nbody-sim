@@ -1,0 +1,12 @@
+name = "BasicNBodySim"
+uuid = "6c488c53-4985-4abe-b56f-7920498f068c"
+authors = ["Aiden Rohrbach <arohrbachj@protonmail.com>"]
+version = "0.1.0"
+
+[deps]
+CairoMakie = "13f3f980-e62b-5c42-98c6-ff1f3baf88f0"
+LinearAlgebra = "37e2e46d-f89d-539d-b4ee-838fcccc9c8e"
+
+[compat]
+CairoMakie = "0.13.4"
+LinearAlgebra = "1.11.0"
