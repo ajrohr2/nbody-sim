@@ -1,6 +1,5 @@
 module BasicNBodySim
 
-using CairoMakie
 using LinearAlgebra
 
 abstract type Body end
