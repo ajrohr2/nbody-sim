@@ -118,6 +118,7 @@ function simulate_without_save(all_bodies::Vector{Body}, time::Float64, steps::I
         for body in all_bodies
             update!(body, all_bodies, time / steps)
         end
+        sleep(0.001)
     end
 end
 
