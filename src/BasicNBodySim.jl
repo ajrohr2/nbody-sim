@@ -119,6 +119,7 @@ function simulate_without_save(all_bodies::Vector{Body}, time::Float64, steps::I
             update!(body, all_bodies, time / steps)
         end
     end
+    sleep(10)
 end
 
 end # module BasicNBodySim
