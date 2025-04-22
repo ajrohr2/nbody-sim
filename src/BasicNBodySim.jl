@@ -4,6 +4,17 @@ using LinearAlgebra
 
 abstract type Body end
 
+"""
+    Planet(mass::Float64, velocity::Vector{Float64}, position::Vector{Float64}, color) <: Body
+
+Create a Planet object with `mass`, `velocity`, `position`, and `color` in S.I. units.
+
+# Examples
+```jldoctest; output = false
+julia> Planet(5.9722e24, [0.0, 0.0], [0.0, 0.0], :blue)
+Planet(5.9722e24, [0.0, 0.0], [0.0, 0.0], :blue)
+```
+"""
 mutable struct Planet <: Body
     mass::Float64
     velocity::Vector{Float64}
@@ -20,16 +31,40 @@ end
 # Mars: 6.417e23 kg
 # Jupiter: 1.898e27 kg
 
-mutable struct BlackHole <: Body
+
+"""
+    Star(mass::Float64, velocity::Vector{Float64}, position::Vector{Float64}, color) <: Body
+
+Create a Star object with `mass`, `velocity`, `position`, and `color` in S.I. units.
+
+# Examples
+```jldoctest; output = false
+julia> Star(1.989e30, [0.0, 0.0], [0.0, 0.0], :blue)
+Star(1.989e30, [0.0, 0.0], [0.0, 0.0], :blue)
+```
+"""
+mutable struct Star <: Body
     mass:: Float64
     velocity::Vector{Float64}
     position::Vector{Float64}
     color::Symbol
-    function BlackHole(mass::Float64, velocity::Vector{Float64}, position::Vector{Float64}, color)
+    function Star(mass::Float64, velocity::Vector{Float64}, position::Vector{Float64}, color)
         new(min(mass, 3e32), velocity, position, color)
     end
 end
 
+
+"""
+    Moon(mass::Float64, velocity::Vector{Float64}, position::Vector{Float64}, color) <: Body
+
+Create a Moon object with `mass`, `velocity`, `position`, and `color` in S.I. units.
+
+# Examples
+```jldoctest; output = false
+julia> Moon(7.348e22, [3.844e8, 0.0], [0.0, 1022.0], :gray)
+Moon(7.348e22, [3.844e8, 0.0], [0.0, 1022.0], :gray)
+```
+"""
 mutable struct Moon <: Body
     mass::Float64
     velocity::Vector{Float64}
@@ -76,7 +111,18 @@ function get_axlen(all_bodies::Vector{Body})
     return max_dist*1.1
 end
 
+"""
+    simulate
 
+Simulate the gravitational forces between bodies in `all_bodies` for `time` seconds using Verlet velocity symplectic integration and save the result to a video file.
+
+# Arguments
+- `all_bodies::Vector{Body}`: A vector containing the bodies to simulate.
+- `time::Float64`: The time to simulate for, in seconds.
+- `steps::Int64`: The number of steps to simulate for. Used to calculated delta time.
+- `frames::Int64`: The number of frames to record with CairoMakie.
+- `name::String`: The name of the file to save the video to.
+"""
 function simulate(all_bodies::Vector{Body}, time::Float64, steps::Int64, frames::Int64, name::String)
     dtime = time / steps
 
@@ -113,6 +159,15 @@ function simulate(all_bodies::Vector{Body}, time::Float64, steps::Int64, frames:
     end
 end
 
+"""
+    simulate_without_save(all_bodies::Vector{Body}, time::Float64, steps::Int64)
+
+Simulate the gravitational force between bodies in `all_bodies` for `time` seconds using Verlet Velocity symplectic integration.
+
+The delta time is determined by `time / steps`.
+
+See also `simulate`.
+"""
 function simulate_without_save(all_bodies::Vector{Body}, time::Float64, steps::Int64)
     for _ in 1:steps
         for body in all_bodies
