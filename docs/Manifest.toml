@@ -28,9 +28,7 @@ version = "1.11.0"
 
 [[deps.BasicNBodySim]]
 deps = ["LinearAlgebra"]
-git-tree-sha1 = "9640ec2a925ac782362a59505ef2b0c55c4d7aca"
-repo-rev = "main"
-repo-url = "https://github.com/ajrohr2/nbody-sim.git"
+path = ".."
 uuid = "6c488c53-4985-4abe-b56f-7920498f068c"
 version = "0.1.0"
 
