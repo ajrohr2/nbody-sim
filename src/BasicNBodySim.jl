@@ -63,8 +63,8 @@ Create a Moon object with `mass`, `velocity`, `position`, and `color` in S.I. un
 
 # Examples
 ```jldoctest; output = false
-julia> Moon(7.348e22, [3.844e8, 0.0], [0.0, 1022.0], :gray)
-Moon(7.348e22, [3.844e8, 0.0], [0.0, 1022.0], :gray)
+julia> Moon(7.348e22, [0.0, 1022.0], [3.844e8, 0.0], :gray)
+Moon(7.348e22, [0.0, 1022.0], [3.844e8, 0.0], :gray)
 ```
 """
 mutable struct Moon <: Body
@@ -81,6 +81,11 @@ end
 # Earth's moon: 7.348e22 kg, 1022 m/s
 # Titan: 1.35e23 kg, 1.2 million km from Saturn, 5570 m/s
 
+"""
+    update!(current_body::Body, all_bodies::Vector{Body}, dtime::Float64)
+
+Update the forces, positions, and velocities of the given `current_body`.
+"""
 function update!(current_body::Body, all_bodies::Vector{Body}, dtime::Float64)
     surrounding_bodies = filter(e->e != current_body, all_bodies)
 
@@ -103,6 +108,13 @@ function update!(current_body::Body, all_bodies::Vector{Body}, dtime::Float64)
     current_body.velocity .+= 0.5 .* (acceleration .+ new_accel) .* dtime
 end
 
+"""
+    get_axlen(all_bodies::Vector{Body})
+
+Get the proper axis length given the positions of each simulated body.
+
+This is only useful when making animations with `CairoMakie.jl`.
+"""
 function get_axlen(all_bodies::Vector{Body})
     central_pos = all_bodies[1].position
     max_dist = 0.0
