@@ -2,7 +2,7 @@ module BasicNBodySim
 
 using LinearAlgebra
 
-export simulate, update!, Body, Planet, Moon, Star
+export simulate, update!, get_axlen, Body, Planet, Moon, Star
 
 abstract type Body end
 
