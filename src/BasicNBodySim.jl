@@ -112,63 +112,13 @@ function get_axlen(all_bodies::Vector{Body})
 end
 
 """
-    simulate
-
-Simulate the gravitational forces between bodies in `all_bodies` for `time` seconds using Verlet velocity symplectic integration and save the result to a video file.
-
-# Arguments
-- `all_bodies::Vector{Body}`: A vector containing the bodies to simulate.
-- `time::Float64`: The time to simulate for, in seconds.
-- `steps::Int64`: The number of steps to simulate for. Used to calculated delta time.
-- `frames::Int64`: The number of frames to record with CairoMakie.
-- `name::String`: The name of the file to save the video to.
-"""
-function simulate(all_bodies::Vector{Body}, time::Float64, steps::Int64, frames::Int64, name::String)
-    dtime = time / steps
-
-    positions = [Point2f(p.position) for p in all_bodies]
-
-    fig = Figure()
-    ax = Axis(fig[1, 1], aspect=1)
-
-    axlen = get_axlen(all_bodies)
-
-    xlims!(ax, -axlen, axlen)
-    ylims!(ax, -axlen, axlen)
-    sc = scatter!(ax, positions, color=[b.color for b in all_bodies])
-
-    framerate = 30
-    frame_interval = div(steps, frames)
-
-    record(fig, name, 1:frames; framerate = framerate) do frame
-        for _ in 1:frame_interval
-            for body in all_bodies
-                update!(body, all_bodies, dtime)
-            end
-        end
-        central_pos = all_bodies[1].position
-        new_positions = [Point2f(p.position .- central_pos) for p in all_bodies]
-        sc[1][] = new_positions
-
-        new_axlen = get_axlen(all_bodies)
-        if new_axlen > axlen
-            axlen = new_axlen
-            xlims!(ax, -axlen, axlen)
-            ylims!(ax, -axlen, axlen)
-        end
-    end
-end
-
-"""
-    simulate_without_save(all_bodies::Vector{Body}, time::Float64, steps::Int64)
+    simulate(all_bodies::Vector{Body}, time::Float64, steps::Int64)
 
 Simulate the gravitational force between bodies in `all_bodies` for `time` seconds using Verlet Velocity symplectic integration.
 
 The delta time is determined by `time / steps`.
-
-See also `simulate`.
 """
-function simulate_without_save(all_bodies::Vector{Body}, time::Float64, steps::Int64)
+function simulate(all_bodies::Vector{Body}, time::Float64, steps::Int64)
     for _ in 1:steps
         for body in all_bodies
             update!(body, all_bodies, time / steps)
